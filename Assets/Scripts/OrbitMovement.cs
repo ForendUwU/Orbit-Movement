@@ -5,9 +5,7 @@ using UnityEngine;
 public class OrbitMovement : MonoBehaviour
 {
     public Transform Planet;
-
-    public float Radius;
-    public float RadiusVelovity;
+    public float MovementRadius;
     public float RotationVelocity;
 
     private Vector3 axis;
@@ -20,10 +18,11 @@ public class OrbitMovement : MonoBehaviour
     void Update()
     {
         transform.RotateAround(Planet.position, axis, RotationVelocity * Time.deltaTime);
-        transform.position = (transform.position - Planet.position).normalized * Radius;
-        if (Radius < 1)
+        transform.position = (transform.position - Planet.position).normalized * MovementRadius;
+
+        if (MovementRadius < 1)
         {
-            Radius = 1;
+            MovementRadius = 1;
         }
     }
 }

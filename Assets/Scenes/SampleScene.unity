@@ -383,7 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6a358a4b745db4992efb955787104e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Center: {fileID: 478375021}
-  Radius: 1
-  RadiusVelovity: 0.5
+  Planet: {fileID: 478375021}
+  MovementRadius: 0
   RotationVelocity: 25

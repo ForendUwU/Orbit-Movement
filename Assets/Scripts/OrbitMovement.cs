@@ -18,7 +18,7 @@ public class OrbitMovement : MonoBehaviour
     void Update()
     {
         transform.RotateAround(Planet.position, axis, RotationVelocity * Time.deltaTime);
-        transform.position = (transform.position - Planet.position).normalized * MovementRadius;
+        transform.position = (transform.position - Planet.position).normalized * MovementRadius + Planet.position;
 
         if (MovementRadius < 1)
         {

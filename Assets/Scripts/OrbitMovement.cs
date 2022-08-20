@@ -1,28 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class OrbitMovement : MonoBehaviour
 {
-    public Transform Planet;
-    public float MovementRadius;
-    public float RotationVelocity;
+    public float Velocity;
+    public float Radius;
+    public Quaternion RotationQuaternion;
 
-    private Vector3 axis;
+    private float timer;
 
     void Start()
     {
-        axis = Vector3.forward;
+        timer = 0;
     }
 
     void Update()
     {
-        transform.RotateAround(Planet.position, axis, RotationVelocity * Time.deltaTime);
-        transform.position = (transform.position - Planet.position).normalized * MovementRadius + Planet.position;
+        timer += Time.deltaTime * Velocity;
 
-        if (MovementRadius < 1)
-        {
-            MovementRadius = 1;
-        }
+        float x = Mathf.Sin(timer) * Radius;
+        float y = Mathf.Cos(timer) * Radius;
+
+        transform.position = new Vector3(x, y, 0);
+
+        float angle = -57 * Time.deltaTime;
+
+        transform.rotation *= Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }

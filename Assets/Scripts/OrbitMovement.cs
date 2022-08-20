@@ -7,7 +7,6 @@ public class OrbitMovement : MonoBehaviour
 {
     public float Velocity;
     public float Radius;
-    public Quaternion RotationQuaternion;
 
     private float timer;
 

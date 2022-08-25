@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -8,24 +9,13 @@ public class OrbitMovement : MonoBehaviour
     public float Velocity;
     public float Radius;
 
-    private float timer;
-
-    void Start()
+    void FixedUpdate()
     {
-        timer = 0;
-    }
+        float x = Mathf.Sin(2 * Mathf.PI * Time.fixedTime * Velocity) * Radius;
+        float y = Mathf.Cos(2 * Mathf.PI * Time.fixedTime * Velocity) * Radius;
+        transform.position = new Vector3(x, y, 0f);
 
-    void Update()
-    {
-        timer += Time.deltaTime * Velocity;
-
-        float x = Mathf.Sin(timer) * Radius;
-        float y = Mathf.Cos(timer) * Radius;
-
-        transform.position = new Vector3(x, y, 0);
-
-        float angle = -57 * Time.deltaTime;
-
-        transform.rotation *= Quaternion.AngleAxis(angle, Vector3.forward);
+        float angle = Time.fixedTime * Velocity;
+        transform.rotation *= Quaternion.AngleAxis(-0.28f, Vector3.forward);
     }
 }

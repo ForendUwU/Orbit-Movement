@@ -15,7 +15,7 @@ public class OrbitMovement : MonoBehaviour
         float y = Mathf.Cos(2 * Mathf.PI * Time.fixedTime * Velocity) * Radius;
         transform.position = new Vector3(x, y, 0f);
 
-        float angle = Time.fixedTime * Velocity;
-        transform.rotation *= Quaternion.AngleAxis(-0.28f, Vector3.forward);
+        float angle = Mathf.Atan2(transform.position.y, transform.position.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }

@@ -18,8 +18,6 @@ public class OrbitMovement : MonoBehaviour
         float y = Mathf.Cos(Time.fixedTime * Velocity * Time.fixedDeltaTime) * Radius + Planet.position.y;
         transform.position = new Vector3(x, y, 0f);
 
-        Debug.Log(Time.fixedTime);
-
         Vector3 relativePosition = transform.position - Planet.position;
 
         float anglularVelocity = Mathf.Atan2(relativePosition.x, relativePosition.y) * Mathf.Rad2Deg;

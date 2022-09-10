@@ -12,15 +12,17 @@ public class OrbitMovement : MonoBehaviour
 
     public Transform Planet;
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        float x = Mathf.Sin(2 * Mathf.PI * Time.fixedTime * Velocity) * Radius + Planet.position.x;
-        float y = Mathf.Cos(2 * Mathf.PI * Time.fixedTime * Velocity) * Radius + Planet.position.y;
+        float x = Mathf.Sin(Time.fixedTime * Velocity * Time.fixedDeltaTime) * Radius + Planet.position.x;
+        float y = Mathf.Cos(Time.fixedTime * Velocity * Time.fixedDeltaTime) * Radius + Planet.position.y;
         transform.position = new Vector3(x, y, 0f);
 
-        Vector3 relatedPosition = transform.position - Planet.position;
+        Debug.Log(Time.fixedTime);
 
-        float angle = Mathf.Atan2(relatedPosition.x, relatedPosition.y) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        Vector3 relativePosition = transform.position - Planet.position;
+
+        float anglularVelocity = Mathf.Atan2(relativePosition.x, relativePosition.y) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(-anglularVelocity, Vector3.forward);
     }
 }

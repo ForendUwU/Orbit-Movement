@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 478375019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -4, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -365,8 +365,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426251696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -383,6 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6a358a4b745db4992efb955787104e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: 0.3
-  Radius: 2
+  Velocity: 90
+  Radius: 1.5
   Planet: {fileID: 478375021}

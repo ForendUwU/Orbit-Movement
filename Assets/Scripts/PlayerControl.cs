@@ -8,10 +8,12 @@ using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour
 {
-    public float Velocity;
+    public float AngularVelocity;
     public float Radius;
 
     public Transform Planet;
+
+    public float MovementVelocity;
 
     private bool isTouched;
 
@@ -24,8 +26,8 @@ public class PlayerControl : MonoBehaviour
     {
         if (!isTouched)
         {
-            float x = Mathf.Sin(Time.fixedTime * Velocity * Time.fixedDeltaTime) * Radius + Planet.position.x;
-            float y = Mathf.Cos(Time.fixedTime * Velocity * Time.fixedDeltaTime) * Radius + Planet.position.y;
+            float x = Mathf.Sin(Time.fixedTime * AngularVelocity * Time.fixedDeltaTime) * Radius + Planet.position.x;
+            float y = Mathf.Cos(Time.fixedTime * AngularVelocity * Time.fixedDeltaTime) * Radius + Planet.position.y;
             transform.position = new Vector3(x, y, 0f);
 
             Vector3 relativePosition = transform.position - Planet.position;
@@ -45,7 +47,7 @@ public class PlayerControl : MonoBehaviour
 
         if (isTouched)
         {
-            transform.position = Vector3.MoveTowards(transform.position, hit.point, Velocity/1000);
+            transform.position = Vector3.MoveTowards(transform.position, hit.point, MovementVelocity * Time.fixedDeltaTime);
         }
     }
 }

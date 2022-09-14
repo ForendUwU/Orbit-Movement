@@ -12,7 +12,6 @@ public class PlayerControl : MonoBehaviour
     public float Radius;
 
     public Transform Planet;
-    public GameObject PlanetPrefab;
 
     public float MovementVelocity;
 
@@ -21,7 +20,6 @@ public class PlayerControl : MonoBehaviour
     private void Start()
     {
         isTouched = false;
-        PlanetPrefab = GameObject.Find("Planet(Clone)");
     }
 
     private void FixedUpdate()
@@ -42,7 +40,7 @@ public class PlayerControl : MonoBehaviour
         Debug.DrawRay(transform.position, trueDir, Color.blue);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, trueDir);
 
-        if (Input.touchCount > 0 || Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0)
         {
             isTouched = true;
         }
@@ -50,15 +48,6 @@ public class PlayerControl : MonoBehaviour
         if (isTouched)
         {
             transform.position = Vector3.MoveTowards(transform.position, hit.point, MovementVelocity * Time.fixedDeltaTime);
-            if (hit.transform.gameObject == PlanetPrefab)
-            {
-                Planet = PlanetPrefab.transform;
-                if (transform.position.x > PlanetPrefab.transform.position.x - 0.3 && transform.position.x < PlanetPrefab.transform.position.x + 0.3 || transform.position.y > PlanetPrefab.transform.position.y - 0.3 && transform.position.y < PlanetPrefab.transform.position.x + 0.3)
-                {
-                    isTouched = false;
-                }
-            }
-
         }
     }
 }

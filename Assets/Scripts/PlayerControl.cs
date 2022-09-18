@@ -5,60 +5,69 @@ using JetBrains.Annotations;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking.Match;
 
 public class PlayerControl : MonoBehaviour
 {
     public float AngularVelocity;
     public float Radius;
-
+    public float MovementVelocity;
     public Transform Planet;
     public GameObject PlanetPrefab;
 
-    public float MovementVelocity;
-
+    private GameObject newPlanet;
     private bool isTouched;
+    private bool isOnOrbit;
 
     private void Start()
     {
         isTouched = false;
-        PlanetPrefab = GameObject.Find("Planet(Clone)");
+        newPlanet = Planet.gameObject;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!isTouched)
         {
-            float x = Mathf.Sin(Time.fixedTime * AngularVelocity * Time.fixedDeltaTime) * Radius + Planet.position.x;
-            float y = Mathf.Cos(Time.fixedTime * AngularVelocity * Time.fixedDeltaTime) * Radius + Planet.position.y;
+            float x = Mathf.Sin((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.x;
+            float y = Mathf.Cos((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.y;
             transform.position = new Vector3(x, y, 0f);
 
             Vector3 relativePosition = transform.position - Planet.position;
 
-            float anglularVelocity = Mathf.Atan2(relativePosition.x, relativePosition.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(-anglularVelocity, Vector3.forward);
+            float rotationVelocity = Mathf.Atan2(relativePosition.x, relativePosition.y) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(-rotationVelocity, Vector3.forward);
         }
 
         Vector3 trueDir = transform.rotation * Vector3.up;
         Debug.DrawRay(transform.position, trueDir, Color.blue);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, trueDir);
 
-        if (Input.touchCount > 0 || Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0 || Input.GetKeyDown(KeyCode.Space))
         {
             isTouched = true;
         }
 
         if (isTouched)
         {
-            transform.position = Vector3.MoveTowards(transform.position, hit.point, MovementVelocity * Time.fixedDeltaTime);
-            if (hit.transform.gameObject == PlanetPrefab)
-            {
-                Planet = PlanetPrefab.transform;
-                if (transform.position.x > PlanetPrefab.transform.position.x - 0.3 && transform.position.x < PlanetPrefab.transform.position.x + 0.3 || transform.position.y > PlanetPrefab.transform.position.y - 0.3 && transform.position.y < PlanetPrefab.transform.position.x + 0.3)
-                {
-                    isTouched = false;
-                }
-            }
-
+            transform.position += transform.up * (MovementVelocity * Time.deltaTime);
         }
+
+        if (isOnOrbit)
+        {
+            Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, new Vector3(newPlanet.transform.position.x, newPlanet.transform.position.y + 4, -10), 10 * Time.deltaTime);
+            if (Camera.main.transform.position == new Vector3(newPlanet.transform.position.x, newPlanet.transform.position.y + 4, -10))
+            {
+                isOnOrbit = false;
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        newPlanet = col.gameObject;
+        Planet = newPlanet.transform;
+        isTouched = false;
+        PlanetSpawn.SpawnPlanet(PlanetPrefab, transform);
+        isOnOrbit = true;
     }
 }

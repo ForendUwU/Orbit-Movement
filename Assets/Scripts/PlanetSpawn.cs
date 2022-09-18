@@ -1,25 +1,34 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class PlanetSpawn : MonoBehaviour
 {
-    public GameObject Planet;
-    void Start()
+    public GameObject PlanetPrefab;
+    public Transform Player;
+    public static List<GameObject> PlanetsList = new List<GameObject>();
+
+    private void Start()
     {
-        Instantiate(Planet, CreateSpawnPosition(), Quaternion.identity);
+        PlanetsList.Add(GameObject.Find("Planet"));
+        SpawnPlanet(PlanetPrefab, Player);
     }
 
-    void Update()
+    private static Vector3 CreateSpawnPosition(Transform player)
     {
-        
+        float x = UnityEngine.Random.Range(-2 + player.position.x, 2 + player.position.x);
+        float y = UnityEngine.Random.Range(6.5f + player.transform.position.y, 7 + player.transform.position.y);
+        return new Vector3(x , y , 0);
     }
 
-    private Vector3 CreateSpawnPosition()
+    public static void SpawnPlanet(GameObject planet, Transform player)
     {
-        float x = UnityEngine.Random.Range(-3, 3);
-        float y = UnityEngine.Random.Range(2, 6);
-        return new Vector3(x, y, 0);
+        PlanetsList.Add(planet);
+        Instantiate(planet, CreateSpawnPosition(player), Quaternion.identity);
     }
+
+    //public static void DestroyPlanet()
+    //{
+    //    Destroy(PlanetsList[0]);
+    //    PlanetsList.RemoveAt(0);
+    //}
 }

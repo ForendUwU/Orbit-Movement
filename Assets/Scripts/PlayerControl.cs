@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Networking.Match;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -14,6 +9,7 @@ public class PlayerControl : MonoBehaviour
     public float MovementVelocity;
     public Transform Planet;
     public GameObject PlanetPrefab;
+    public RectTransform panelWithScore;
 
     private GameObject newPlanet;
     private bool isTouched;
@@ -60,10 +56,19 @@ public class PlayerControl : MonoBehaviour
                 isOnOrbit = false;
             }
         }
+
+        if (transform.position.x > Camera.main.transform.position.x + Camera.main.orthographicSize / 2f
+            || transform.position.x < Camera.main.transform.position.x - Camera.main.orthographicSize / 2f
+            || transform.position.y > Camera.main.transform.position.y + Camera.main.orthographicSize
+            || transform.position.y < Camera.main.transform.position.y - Camera.main.orthographicSize)
+        {
+            Debug.Log("game over");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        ScoreScript.ChangeScore(panelWithScore);
         newPlanet = col.gameObject;
         Planet = newPlanet.transform;
         isTouched = false;

@@ -9,7 +9,9 @@ public class PlayerControl : MonoBehaviour
     public float MovementVelocity;
     public Transform Planet;
     public GameObject PlanetPrefab;
-    public RectTransform panelWithScore;
+    public RectTransform PanelWithScore;
+    public RectTransform GameOverPanel;
+    public static bool isGameOver;
 
     private GameObject newPlanet;
     private bool isTouched;
@@ -57,18 +59,27 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        if (transform.position.x > Camera.main.transform.position.x + Camera.main.orthographicSize / 2f
+        if (!isGameOver && transform.position.x > Camera.main.transform.position.x + Camera.main.orthographicSize / 2f
             || transform.position.x < Camera.main.transform.position.x - Camera.main.orthographicSize / 2f
             || transform.position.y > Camera.main.transform.position.y + Camera.main.orthographicSize
             || transform.position.y < Camera.main.transform.position.y - Camera.main.orthographicSize)
         {
-            Debug.Log("game over");
+            gameObject.SetActive(false);
+            isGameOver = true;
+            GameOverScript.GameOver(GameOverPanel);
+        }
+
+        if (isGameOver)
+        {
+            Planet = newPlanet.transform;
+            isTouched = false;
+            isGameOver = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        ScoreScript.ChangeScore(panelWithScore);
+        ScoreScript.ChangeScore(PanelWithScore);
         newPlanet = col.gameObject;
         Planet = newPlanet.transform;
         isTouched = false;

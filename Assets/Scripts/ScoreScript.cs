@@ -5,11 +5,15 @@ using DG.Tweening;
 
 public class ScoreScript : MonoBehaviour
 {
-    private static int score;
+    public static int score;
 
     public Text scoreText;
+    public Text GameOverScoreText;
 
     public static RectTransform panelWithScore;
+
+    public static bool InGameScoreRestart;
+    public static bool GameOverScoreRestart;
 
     private void Start()
     {
@@ -22,9 +26,23 @@ public class ScoreScript : MonoBehaviour
         {
             if (panelWithScore.localScale == Vector3.zero)
             {
+                GameOverScoreText.text = score.ToString();
                 scoreText.text = score.ToString();
                 panelWithScore.DOScale(Vector3.one, 0.5f);
             }
+        }
+
+        if (InGameScoreRestart)
+        {
+            scoreText.text = "0";
+            score = 0;
+            InGameScoreRestart = false;
+        }
+
+        if (GameOverScoreRestart)
+        {
+            GameOverScoreText.text = "0";
+            GameOverScoreRestart = false;
         }
     }
 

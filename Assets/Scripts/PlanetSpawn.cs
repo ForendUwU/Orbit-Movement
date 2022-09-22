@@ -26,9 +26,12 @@ public class PlanetSpawn : MonoBehaviour
         Instantiate(planet, CreateSpawnPosition(player), Quaternion.identity);
     }
 
-    //public static void DestroyPlanet()
+    //public static void RestartPlanets()
     //{
-    //    Destroy(PlanetsList[0]);
-    //    PlanetsList.RemoveAt(0);
+    //    for (int i = PlanetsList.Count; i < 1; i--)
+    //    {
+    //        Destroy(PlanetsList[i]);
+    //        PlanetsList.RemoveAt(i);
+    //    }
     //}
 }

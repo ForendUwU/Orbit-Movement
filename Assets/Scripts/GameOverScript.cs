@@ -28,7 +28,7 @@ public class GameOverScript : MonoBehaviour
                 gameOverSequence.Kill();
             });
         ScoreScript.InGameScoreRestart = true;
-        PlayerControl.isGameOver = true;
+        PlayerControl.IsGameOver = true;
         Player.SetActive(true);
     }
 }

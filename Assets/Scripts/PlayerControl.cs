@@ -11,22 +11,25 @@ public class PlayerControl : MonoBehaviour
     public GameObject PlanetPrefab;
     public RectTransform PanelWithScore;
     public RectTransform GameOverPanel;
-    public static bool isGameOver;
+    public static bool IsGameOver;
 
     private GameObject newPlanet;
     private bool isTouched;
     private bool isOnOrbit;
+    private float startVelocity;
 
     private void Start()
     {
         isTouched = false;
         newPlanet = Planet.gameObject;
+        startVelocity = AngularVelocity;
     }
 
     private void Update()
     {
         if (!isTouched)
         {
+            AngularVelocity += 0.01f;
             float x = Mathf.Sin((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.x;
             float y = Mathf.Cos((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.y;
             transform.position = new Vector3(x, y, 0f);
@@ -59,29 +62,33 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        if (!isGameOver && transform.position.x > Camera.main.transform.position.x + Camera.main.orthographicSize / 2f
+        if (!IsGameOver && transform.position.x > Camera.main.transform.position.x + Camera.main.orthographicSize / 2f
             || transform.position.x < Camera.main.transform.position.x - Camera.main.orthographicSize / 2f
             || transform.position.y > Camera.main.transform.position.y + Camera.main.orthographicSize
             || transform.position.y < Camera.main.transform.position.y - Camera.main.orthographicSize)
         {
             gameObject.SetActive(false);
-            isGameOver = true;
+            IsGameOver = true;
             GameOverScript.GameOver(GameOverPanel);
         }
 
-        if (isGameOver)
+        if (IsGameOver)
         {
             Planet = newPlanet.transform;
             isTouched = false;
-            isGameOver = false;
+            IsGameOver = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         ScoreScript.ChangeScore(PanelWithScore);
+
+        AngularVelocity = startVelocity;
+
         newPlanet = col.gameObject;
         Planet = newPlanet.transform;
+
         isTouched = false;
         PlanetSpawn.SpawnPlanet(PlanetPrefab, transform);
         isOnOrbit = true;

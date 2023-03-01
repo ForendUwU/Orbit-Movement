@@ -18,6 +18,8 @@ public class PlayerControl : MonoBehaviour
     private bool isOnOrbit;
     private float startVelocity;
 
+    private float theta;
+
     private void Start()
     {
         isTouched = false;
@@ -29,10 +31,14 @@ public class PlayerControl : MonoBehaviour
     {
         if (!isTouched)
         {
-            AngularVelocity += 0.01f;
-            float x = Mathf.Sin((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.x;
-            float y = Mathf.Cos((Time.time * AngularVelocity / 360f % 1f * 360f) * Mathf.Deg2Rad) * Radius + Planet.position.y;
-            transform.position = new Vector3(x, y, 0f);
+            //AngularVelocity += 0.01f;
+            var pos = new Vector3(Mathf.Cos(theta * Mathf.Deg2Rad), Mathf.Sin(theta * Mathf.Deg2Rad));
+           
+            theta += Time.deltaTime * AngularVelocity;
+
+            pos *= Radius;
+            pos += Planet.position; 
+            transform.position = pos;
 
             Vector3 relativePosition = transform.position - Planet.position;
 
@@ -85,6 +91,15 @@ public class PlayerControl : MonoBehaviour
         ScoreScript.ChangeScore(PanelWithScore);
 
         AngularVelocity = startVelocity;
+
+        var toRight = Vector2.right;
+        var toHitPoint = transform.position - col.transform.position;
+
+        Debug.DrawRay(col.transform.position, toHitPoint, Color.red);
+
+        theta = Vector2.SignedAngle(toRight, toHitPoint);
+
+        Debug.Log(theta);
 
         newPlanet = col.gameObject;
         Planet = newPlanet.transform;

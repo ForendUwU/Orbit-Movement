@@ -6,11 +6,12 @@ public class PlanetSpawn : MonoBehaviour
     public GameObject PlanetPrefab;
     public Transform Player;
     public static List<GameObject> PlanetsList = new List<GameObject>();
+    public GameObject background;
 
     private void Start()
     {
         PlanetsList.Add(GameObject.Find("Planet"));
-        SpawnPlanet(PlanetPrefab, Player);
+        SpawnPlanet(PlanetPrefab, Player, background);
     }
 
     private static Vector3 CreateSpawnPosition(Transform player)
@@ -20,10 +21,12 @@ public class PlanetSpawn : MonoBehaviour
         return new Vector3(x , y , 0);
     }
 
-    public static void SpawnPlanet(GameObject planet, Transform player)
+    public static void SpawnPlanet(GameObject planet, Transform player, GameObject background)
     {
         PlanetsList.Add(planet);
-        Instantiate(planet, CreateSpawnPosition(player), Quaternion.identity);
+        Vector3 spawnPos = CreateSpawnPosition(player);
+        Instantiate(planet, spawnPos, Quaternion.identity);
+        Instantiate(background, spawnPos + new Vector3(0,7,0), Quaternion.identity);
     }
 
     //public static void RestartPlanets()

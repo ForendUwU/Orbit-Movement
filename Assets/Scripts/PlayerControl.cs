@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     public RectTransform PanelWithScore;
     public RectTransform GameOverPanel;
     public static bool IsGameOver;
+    public GameObject background;
 
     private GameObject newPlanet;
     private bool isTouched;
@@ -123,7 +124,7 @@ public class PlayerControl : MonoBehaviour
         Planet = newPlanet.transform;
 
         isTouched = false;
-        PlanetSpawn.SpawnPlanet(PlanetPrefab, transform);
+        PlanetSpawn.SpawnPlanet(PlanetPrefab, transform, background);
         isOnOrbit = true;
     }
 }

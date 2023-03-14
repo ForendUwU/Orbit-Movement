@@ -12,7 +12,10 @@ public class PlayerControl : MonoBehaviour
     public RectTransform PanelWithScore;
     public RectTransform GameOverPanel;
     public static bool IsGameOver;
-    public GameObject background;
+    public GameObject Background;
+    public AudioSource StartSound;
+    public AudioSource LandingSound;
+    public AudioSource GameOverSound;
 
     private GameObject newPlanet;
     private bool isTouched;
@@ -59,9 +62,10 @@ public class PlayerControl : MonoBehaviour
         Vector3 trueDir = transform.rotation * Vector3.up;
         Debug.DrawRay(transform.position, trueDir, Color.blue);
 
-        if (Input.touchCount > 0 || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             isTouched = true;
+            StartSound.Play();
         }
 
         if (isTouched)
@@ -83,6 +87,7 @@ public class PlayerControl : MonoBehaviour
             || transform.position.y > Camera.main.transform.position.y + Camera.main.orthographicSize
             || transform.position.y < Camera.main.transform.position.y - Camera.main.orthographicSize)
         {
+            GameOverSound.Play();
             gameObject.SetActive(false);
             IsGameOver = true;
             GameOverScript.GameOver(GameOverPanel);
@@ -98,6 +103,7 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        LandingSound.Play();
         ScoreScript.ChangeScore(PanelWithScore);
 
         AngularVelocity = startVelocity;
@@ -124,7 +130,7 @@ public class PlayerControl : MonoBehaviour
         Planet = newPlanet.transform;
 
         isTouched = false;
-        PlanetSpawn.SpawnPlanet(PlanetPrefab, transform, background);
+        PlanetSpawn.SpawnPlanet(PlanetPrefab, transform, Background);
         isOnOrbit = true;
     }
 }
